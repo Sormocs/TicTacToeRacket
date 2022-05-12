@@ -92,7 +92,7 @@
         [(< j n)
          (when (= (buscar? mat 0 0 i j) (+ jugador 1))
            
-           (DibujaCirculo (list j i))
+           (DibujaEquis (list j i))
            )
          (DibujaProgreso i (+ j 1))
          ]
