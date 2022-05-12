@@ -1,5 +1,5 @@
 #lang racket
-(define mat (list (list 1 0 0) (list 0 0 0) (list 0 2 0)))
+(provide Main)
 
 ;;Verifica si la matriz no esta completa, para poder continuar el juego
 ;;Parametros
@@ -106,13 +106,14 @@
 (define (Main original_mat m n)
   (cond [(equal? (Winner? original_mat original_mat m n 0) #t)(Winner? original_mat original_mat m n 0)]
         [(equal? (verificarMatriz original_mat) #t)"Tie"]
-        (else (GreedySel original_mat m n 0 0))))
+        (else (cond [(list? (GreedySel original_mat m n 0 0))(GreedySel original_mat m n 0 0)]
+              (else (RandomPos(m n original_mat)))))))
 
 
 ;Funciones de seleccion
 
 (define (GreedySel original_mat m n i j)
-  (print (verificarMovimientoComputadora i j original_mat))
+  ;(print (verificarMovimientoComputadora i j original_mat))
   (cond [(and (equal? (buscar? original_mat 0 0 i j) 1) (equal? (car (verificarMovimientoComputadora i j original_mat)) #f)) (cond [(and (equal? m (+ i 1)) (equal? n (+ j 1))) (RandomPos m n original_mat)]
                                                                                    (else
                                                                                    (cond [(equal? n (+ j 1)) (GreedySel original_mat m n (+ 1 i) 0)]
@@ -134,7 +135,7 @@
   )
 
 (define (RandomPosAux i j m n matriz)
-  (cond (equal? (buscar? matriz 0 0 i j) 0) (list i j)
+  (cond ((equal? (buscar? matriz 0 0 i j) 0) (list i j))
   (else (RandomPosAux (random m) (random n) m n matriz)))
   )
 
@@ -177,14 +178,5 @@
         ((equal? (buscar? matriz 0 0 (- i 1) (- j 1)) 0) (list (- i 1) (- j 1)))
         (else RandomPos m n matriz)
         ))
-
-  
-
-
-(Main mat 3 3)
-
-
-
-
 
   
